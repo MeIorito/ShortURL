@@ -1,0 +1,15 @@
+ANONYMOUS:
+    Max 5 URLs
+    24H validity
+    No URL management
+
+FREE:
+    Max 5 URLs
+    30 day validity
+    URL management
+
+PAID:
+    Unlimited URLs
+    Unlimited valididty
+    URL management
+    analytics

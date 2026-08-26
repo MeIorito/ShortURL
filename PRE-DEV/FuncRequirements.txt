@@ -1,0 +1,11 @@
+ Anonymous user kan URL verkorten
+ Anonymous URLs verlopen na 24 uur
+ Free account kan maximaal 5 actieve URLs hebben
+ Free URLs verlopen na 30 dagen
+ Premium account heeft onbeperkte URLs
+ Premium URLs verlopen niet
+ Short URL redirect naar originele URL
+ Account registreren
+ Inloggen
+ Eigen URLs bekijken/verwijderen
+ Click count bijhouden

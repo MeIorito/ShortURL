@@ -1,0 +1,11 @@
+POST   /api/auth/register       (everyone)
+POST   /api/auth/login          (everyone)   
+
+POST   /api/urls                (everyone)
+GET    /api/urls                (ADMIN)
+GET    /api/urls/{id}           (FREE, PAID)
+DELETE /api/urls/{id}           (FREE, PAID)
+
+GET    /api/urls/{id}/stats     (PAID)
+
+GET    /{shortCode}             (everyone)
