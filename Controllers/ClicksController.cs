@@ -16,16 +16,4 @@ public class ClicksController : ControllerBase
     {
         return Ok();
     }
-
-    [HttpPost]
-    public IActionResult CreateClick()
-    {
-        return Ok();
-    }
-
-    [HttpDelete]
-    public IActionResult DeleteClick(string id)
-    {
-        return Ok();
-    }
 }
