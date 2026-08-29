@@ -2,7 +2,7 @@ namespace ShortURL.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v1/health")]
 public class HealthCheckController : ControllerBase
 {
     [HttpGet]

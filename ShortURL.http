@@ -1,6 +1,6 @@
 @ShortURL_HostAddress = http://localhost:5266
 
-GET {{ShortURL_HostAddress}}/weatherforecast/
+GET {{ShortURL_HostAddress}}/HealthCheckController/
 Accept: application/json
 
 ###
