@@ -32,4 +32,21 @@ public class UserService
 
         return await _userRepository.CreateUser(user);
     }
+
+    public async Task<bool> LoginAsync(LoginDto dto)
+    {
+        User? user = await _userRepository.GetUser(dto.Email);
+
+        if (user == null)
+        {
+            throw new InvalidOperationException("Email not in use");
+        }
+
+        if (dto.Password != user.PasswordHash)
+        {
+            return false;
+        }
+
+        return true;
+    }
 }

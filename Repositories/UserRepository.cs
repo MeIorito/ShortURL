@@ -26,6 +26,11 @@ public class UserRepository
         return user;
     }
 
+    public async Task<User?> GetUser(string email)
+    {
+        return await _users.Find(user => user.Email == email).FirstOrDefaultAsync();
+    }
+
     // TODO Unique Email Index for faster checks
     public async Task<bool> IsEmailInUse(string email)
     {
