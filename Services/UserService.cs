@@ -39,7 +39,7 @@ public class UserService
 
         if (user == null)
         {
-            throw new InvalidOperationException("Email not in use");
+            return false;
         }
 
         if (dto.Password != user.PasswordHash)
