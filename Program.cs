@@ -1,6 +1,9 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using ShortURL.Configuration;
+using ShortURL.Services;
+using ShortURL.Repositories;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +19,10 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
 
     return new MongoClient(settings.ConnectionString);
 });
+
+// Register repo's and services for DI
+builder.Services.AddSingleton<UserRepository>();
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

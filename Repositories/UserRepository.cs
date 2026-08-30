@@ -1,8 +1,9 @@
+namespace ShortURL.Repositories;
+
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using ShortURL.Configuration;
 using ShortURL.Models;
-
 
 public class UserRepository
 {
@@ -17,4 +18,12 @@ public class UserRepository
 
         _users = database.GetCollection<User>("users");
     }
+
+    public async Task<User> CreateUser(User user)
+{
+    await _users.InsertOneAsync(user);
+    
+    return user;
+}
+
 }
