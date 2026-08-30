@@ -15,6 +15,13 @@ public class UserService
 
     public async Task<User> CreateUserAsync(RegisterDto dto)
     {
+        bool EmailInUse = await _userRepository.IsEmailInUse(dto.Email);
+
+        if (EmailInUse)
+        {
+            throw new InvalidOperationException("Email is already registered.");
+        }
+
         User user = new User
         (
             dto.Username,

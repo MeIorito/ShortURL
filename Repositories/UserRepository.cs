@@ -20,10 +20,16 @@ public class UserRepository
     }
 
     public async Task<User> CreateUser(User user)
-{
-    await _users.InsertOneAsync(user);
-    
-    return user;
-}
+    {
+        await _users.InsertOneAsync(user);
+        
+        return user;
+    }
+
+    // TODO Unique Email Index for faster checks
+    public async Task<bool> IsEmailInUse(string email)
+    {
+        return await _users.Find(user => user.Email == email).AnyAsync();
+    }
 
 }
