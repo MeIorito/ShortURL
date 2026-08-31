@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShortURL.DTOs.Auth;
 using ShortURL.Services;
 using ShortURL.Models;
+using ShortURL.DTOs;
 
 [ApiController]
 [Route("api/v1/auth")]
@@ -19,14 +20,9 @@ public class AuthController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Login(LoginDto login)
     {
-        bool isValidLogin = await _userService.LoginAsync(login);
+        LoginResponseDto dto = await _userService.LoginAsync(login);
 
-        if (!isValidLogin)
-        {
-            return Unauthorized("Invalid email or password.");
-        }
-
-        return Ok(new { message = "Login successful!" });
+        return Ok(dto);
     }
 
     [HttpPost]

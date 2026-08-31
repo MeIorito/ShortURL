@@ -3,6 +3,7 @@ namespace ShortURL.Services;
 using ShortURL.Repositories;
 using ShortURL.DTOs.Auth;
 using ShortURL.Models;
+using ShortURL.DTOs;
 
 public class UserService
 {
@@ -33,20 +34,24 @@ public class UserService
         return await _userRepository.CreateUser(user);
     }
 
-    public async Task<bool> LoginAsync(LoginDto dto)
+    public async Task<LoginResponseDto> LoginAsync(LoginDto dto)
     {
         User? user = await _userRepository.GetUser(dto.Email);
 
         if (user == null)
         {
-            return false;
+            throw new InvalidOperationException("User not found");
         }
 
         if (dto.Password != user.PasswordHash)
         {
-            return false;
+            throw new InvalidOperationException("Incorrect credentials");
         }
 
-        return true;
+        return new LoginResponseDto(
+            user.Id,
+            user.Email,
+            user.Tier
+        );
     }
 }
