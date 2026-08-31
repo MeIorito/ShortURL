@@ -3,7 +3,6 @@ namespace ShortURL.Services;
 using ShortURL.Repositories;
 using ShortURL.DTOs.Auth;
 using ShortURL.Models;
-using ShortURL.DTOs;
 
 public class UserService
 {

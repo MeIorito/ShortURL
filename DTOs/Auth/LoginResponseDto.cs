@@ -1,4 +1,4 @@
-namespace ShortURL.DTOs;
+namespace ShortURL.DTOs.Auth;
 
 using ShortURL.Enums;
 
