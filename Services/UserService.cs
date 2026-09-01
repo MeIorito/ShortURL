@@ -40,6 +40,7 @@ public class UserService
 
         if (user == null)
         {
+            BCrypt.Net.BCrypt.EnhancedVerify("fakehashforenum", "fakehashforenum");
             throw new UserNotFoundException();
         }
 
