@@ -24,6 +24,7 @@ public class GlobalExceptionHandler : IExceptionHandler
 
         var statusCode = exception switch
         {
+            FluentValidation.ValidationException => StatusCodes.Status400BadRequest,
             InvalidCredentialsException => StatusCodes.Status401Unauthorized,
             EmailAlreadyExistsException => StatusCodes.Status409Conflict,
             UserNotFoundException => StatusCodes.Status404NotFound,
@@ -32,6 +33,7 @@ public class GlobalExceptionHandler : IExceptionHandler
 
         var title = exception switch
         {
+            FluentValidation.ValidationException => "Validation failed",
             InvalidCredentialsException => "Invalid credentials",
             EmailAlreadyExistsException => "Email already exists",
             UserNotFoundException => "User not found",
@@ -42,9 +44,25 @@ public class GlobalExceptionHandler : IExceptionHandler
         {
             Status = statusCode,
             Title = title,
-            Detail = exception.Message,
+            Detail = exception switch
+            {
+                FluentValidation.ValidationException => "One or more validation errors occurred.",
+                _ => exception.Message
+            },
             Instance = httpContext.Request.Path
         };
+
+        if (exception is FluentValidation.ValidationException validationException)
+        {
+            var errors = validationException.Errors
+                .GroupBy(e => e.PropertyName)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(e => e.ErrorMessage).ToArray()
+                );
+
+            problemDetails.Extensions["errors"] = errors;
+        }
 
         problemDetails.Extensions["traceId"] =
             httpContext.TraceIdentifier;

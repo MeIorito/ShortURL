@@ -4,6 +4,7 @@ using ShortURL.Configuration;
 using ShortURL.Services;
 using ShortURL.Repositories;
 using ShortURL.Exceptions;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.AddProblemDetails();
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddScoped<UserService>();
 
+builder.Services.AddValidatorsFromAssemblyContaining<Program>(); 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
