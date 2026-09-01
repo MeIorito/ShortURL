@@ -3,6 +3,7 @@ namespace ShortURL.Services;
 using ShortURL.Repositories;
 using ShortURL.DTOs.Auth;
 using ShortURL.Models;
+using ShortURL.Exceptions;
 
 public class UserService
 {
@@ -19,7 +20,7 @@ public class UserService
 
         if (EmailInUse)
         {
-            throw new InvalidOperationException("Email is already registered.");
+            throw new EmailAlreadyExistsException();
         }
 
         User user = new User
@@ -39,12 +40,12 @@ public class UserService
 
         if (user == null)
         {
-            throw new InvalidOperationException("User not found");
+            throw new UserNotFoundException();
         }
 
         if (dto.Password != user.PasswordHash)
         {
-            throw new InvalidOperationException("Incorrect credentials");
+            throw new InvalidCredentialsException();
         }
 
         return new LoginResponseDto(
