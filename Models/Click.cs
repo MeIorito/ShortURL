@@ -1,6 +1,5 @@
 namespace ShortURL.Models;
 
-
 public class Click
 {
    private Click() {} 

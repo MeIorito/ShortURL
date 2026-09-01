@@ -2,7 +2,6 @@ namespace ShortURL.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using ShortURL.DTOs.Auth;
 using ShortURL.Services;
-using ShortURL.Models;
 
 [ApiController]
 [Route("api/v1/auth")]
