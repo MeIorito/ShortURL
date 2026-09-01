@@ -3,9 +3,9 @@ namespace ShortURL.DTOs.Auth;
 using ShortURL.Enums;
 using ShortURL.Models;
 
-public class LoginResponseDto
+public class RegisterResponseDto
 {
-    public LoginResponseDto(User user)
+        public RegisterResponseDto(User user)
     {
         Id = user.Id;
         Email = user.Email;
@@ -17,5 +17,4 @@ public class LoginResponseDto
     public string Email { get; set; }
 
     public UserTier Tier { get; set; }
-
 }

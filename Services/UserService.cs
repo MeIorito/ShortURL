@@ -14,7 +14,7 @@ public class UserService
         _userRepository = userRepository;
     }
 
-    public async Task<User> CreateUserAsync(RegisterDto dto)
+    public async Task<RegisterResponseDto> CreateUserAsync(RegisterDto dto)
     {
         bool EmailInUse = await _userRepository.IsEmailInUse(dto.Email);
 
@@ -28,10 +28,10 @@ public class UserService
             dto.Username,
             dto.FullName,
             dto.Email,
-            dto.Password
+            BCrypt.Net.BCrypt.EnhancedHashPassword(dto.Password, workFactor: 13)
         );
 
-        return await _userRepository.CreateUser(user);
+        return new RegisterResponseDto(await _userRepository.CreateUser(user));
     }
 
     public async Task<LoginResponseDto> LoginAsync(LoginDto dto)
@@ -43,15 +43,11 @@ public class UserService
             throw new UserNotFoundException();
         }
 
-        if (dto.Password != user.PasswordHash)
+        if (!BCrypt.Net.BCrypt.EnhancedVerify(dto.Password, user.PasswordHash))
         {
             throw new InvalidCredentialsException();
         }
 
-        return new LoginResponseDto(
-            user.Id,
-            user.Email,
-            user.Tier
-        );
+        return new LoginResponseDto(user);
     }
 }
