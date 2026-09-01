@@ -2,9 +2,7 @@ namespace ShortURL.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using ShortURL.DTOs.Auth;
 using ShortURL.Services;
-using ShortURL.Validators;
 using FluentValidation;
-using ShortURL.Exceptions;
 
 [ApiController]
 [Route("api/v1/auth")]
@@ -13,11 +11,18 @@ public class AuthController : ControllerBase
 
     private readonly UserService _userService;
     private readonly IValidator<LoginDto> _loginRequestValidator;
+    private readonly IValidator<RegisterDto> _registerRequestValidator;
 
-    public AuthController(UserService userService, IValidator<LoginDto> loginRequestValidator)
+
+    public AuthController(
+        UserService userService, 
+        IValidator<LoginDto> loginRequestValidator,
+        IValidator<RegisterDto> registerReguestValidator
+        )
     {
         _userService = userService;
         _loginRequestValidator = loginRequestValidator;
+        _registerRequestValidator = registerReguestValidator;
     }
 
     [HttpGet]
@@ -33,6 +38,8 @@ public class AuthController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Register(RegisterDto register)
     {
+        await _registerRequestValidator.ValidateAndThrowAsync(register);
+
         RegisterResponseDto dto = await _userService.CreateUserAsync(register);
 
         return CreatedAtAction(nameof(Register), new { id = dto.Id }, dto);
