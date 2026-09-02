@@ -5,11 +5,12 @@ using ShortURL.Models;
 
 public class LoginResponseDto
 {
-    public LoginResponseDto(User user)
+    public LoginResponseDto(User user, string jwt)
     {
         Id = user.Id;
         Email = user.Email;
         Tier = user.Tier;
+        Jwt = jwt;
     }
 
     public Guid Id { get; set; }
@@ -17,5 +18,7 @@ public class LoginResponseDto
     public string Email { get; set; }
 
     public UserTier Tier { get; set; }
+
+    public string Jwt { get; }
 
 }

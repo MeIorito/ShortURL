@@ -8,10 +8,12 @@ using ShortURL.Exceptions;
 public class UserService
 {
     private readonly UserRepository _userRepository;
+    private readonly JwtService _jwtService;
 
-    public UserService(UserRepository userRepository)
+    public UserService(UserRepository userRepository, JwtService jwtService)
     {
         _userRepository = userRepository;
+        _jwtService = jwtService;
     }
 
     public async Task<RegisterResponseDto> CreateUserAsync(RegisterDto dto)
@@ -49,6 +51,10 @@ public class UserService
             throw new InvalidCredentialsException();
         }
 
-        return new LoginResponseDto(user);
+        string jwtToken = _jwtService.GenerateToken(user);
+
+        Console.WriteLine(jwtToken);
+
+        return new LoginResponseDto(user, jwtToken);
     }
 }

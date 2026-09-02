@@ -5,6 +5,9 @@ using ShortURL.Services;
 using ShortURL.Repositories;
 using ShortURL.Exceptions;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +32,28 @@ builder.Services.AddProblemDetails();
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddScoped<UserService>();
 
+// Jwt auth
+builder.Services.AddScoped<JwtService>();
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(
+                    builder.Configuration["Jwt:Secret"]!))
+        };
+    });
+
 builder.Services.AddValidatorsFromAssemblyContaining<Program>(); 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -44,9 +69,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.UseExceptionHandler();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
