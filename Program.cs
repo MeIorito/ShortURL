@@ -31,6 +31,9 @@ builder.Services.AddProblemDetails();
 // Register repo's and services for DI
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddSingleton<UrlRepository>();
+builder.Services.AddScoped<UrlService>();
+
 
 // Jwt auth
 builder.Services.AddScoped<JwtService>();

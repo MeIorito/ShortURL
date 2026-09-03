@@ -1,12 +1,16 @@
+using System.Diagnostics.CodeAnalysis;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace ShortURL.Models;
 
 public class Url
 {
     private Url() { }
 
+    [SetsRequiredMembers]
     public Url(string shortCode, string originalUrl, Guid userId, DateTime expiresAt)
     {
-        Id = Guid.NewGuid();
         ShortCode = shortCode;
         OriginalUrl = originalUrl;
         UserId = userId;
@@ -15,12 +19,15 @@ public class Url
         Clicks = 0;
     }
 
-    public Guid Id { get; private set; }
+    [BsonId]
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
+    public Guid Id { get; set; }
 
     public required string ShortCode { get; set; }
 
     public required string OriginalUrl { get; set; }
 
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid UserId { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
