@@ -1,4 +1,6 @@
 namespace ShortURL.Controllers;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
