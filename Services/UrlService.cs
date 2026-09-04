@@ -1,9 +1,7 @@
 namespace ShortURL.Services;
 
 using ShortURL.Repositories;
-using ShortURL.DTOs.Auth;
 using ShortURL.Models;
-using ShortURL.Exceptions;
 using ShortURL.DTOs;
 using System;
 
@@ -17,12 +15,12 @@ public class UrlService
     }
 
     // All dynamic stuff still hardcoded
-    public async Task<CreateUrlResponseDto> CreateUrlAsync(CreateUrlDto dto)
+    public async Task<CreateUrlResponseDto> CreateUrlAsync(CreateUrlDto dto, Guid userId)
     {
         Url url = new Url(
             "XXxxXX",
             dto.url,
-            Guid.NewGuid(),
+            userId,
             DateTime.UtcNow.Add(new TimeSpan(1,0,0))
         );
 

@@ -53,8 +53,6 @@ public class UserService
 
         string jwtToken = _jwtService.GenerateToken(user);
 
-        Console.WriteLine(jwtToken);
-
         return new LoginResponseDto(user, jwtToken);
     }
 }

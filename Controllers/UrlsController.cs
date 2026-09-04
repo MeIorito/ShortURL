@@ -1,5 +1,7 @@
 namespace ShortURL.Controllers;
 
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShortURL.DTOs;
@@ -10,10 +12,12 @@ using ShortURL.Services;
 public class UrlsController : ControllerBase
 {
     private readonly UrlService _urlService;
+    private readonly UserContextService _userContextService;
 
-    public UrlsController(UrlService urlService)
+    public UrlsController(UrlService urlService, UserContextService userContextService)
     {
         _urlService = urlService;
+        _userContextService = userContextService;
     }
 
     [HttpGet]
@@ -32,7 +36,9 @@ public class UrlsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateUrl(CreateUrlDto createDto)
     {
-        CreateUrlResponseDto dto = await _urlService.CreateUrlAsync(createDto);
+        Guid userId = await _userContextService.GetCurrentUserSub();
+
+        CreateUrlResponseDto dto = await _urlService.CreateUrlAsync(createDto, userId);
 
         return Ok(dto);
     }

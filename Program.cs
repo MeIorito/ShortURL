@@ -33,6 +33,7 @@ builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddSingleton<UrlRepository>();
 builder.Services.AddScoped<UrlService>();
+builder.Services.AddScoped<UserContextService>();
 
 
 // Jwt auth
@@ -59,6 +60,7 @@ builder.Services
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>(); 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
