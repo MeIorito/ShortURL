@@ -46,6 +46,15 @@ public class UrlsController : ControllerBase
         return Ok(dto);
     }
 
+    [HttpPost("free")]
+    public async Task<IActionResult> CreateUrlFree(CreateUrlDto createDto)
+    {
+
+        CreateUrlResponseDto dto = await _urlService.CreateUrlAsync(createDto, null, UserTier.Anonymous);
+
+        return Ok(dto);
+    }
+
     [HttpDelete("{id}")]
     public IActionResult DeleteUrl(string id)
     {

@@ -20,7 +20,7 @@ public class CreateUrlResponseDto
 
     public  string OriginalUrl { get; set; }
 
-    public Guid UserId { get; private set; }
+    public Guid? UserId { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
 

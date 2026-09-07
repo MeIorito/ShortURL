@@ -9,7 +9,7 @@ public class Url
     private Url() { }
 
     [SetsRequiredMembers]
-    public Url(string shortCode, string originalUrl, Guid userId, DateTime expiresAt)
+    public Url(string shortCode, string originalUrl, Guid? userId, DateTime expiresAt)
     {
         ShortCode = shortCode;
         OriginalUrl = originalUrl;
@@ -28,7 +28,7 @@ public class Url
     public required string OriginalUrl { get; set; }
 
     [BsonGuidRepresentation(GuidRepresentation.Standard)]
-    public Guid UserId { get; private set; }
+    public Guid? UserId { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
 

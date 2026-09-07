@@ -16,15 +16,18 @@ public class UrlService
     }
 
     // All dynamic stuff still hardcoded
-    public async Task<CreateUrlResponseDto> CreateUrlAsync(CreateUrlDto dto, Guid userId, UserTier role)
+    public async Task<CreateUrlResponseDto> CreateUrlAsync(CreateUrlDto dto, Guid? userId, UserTier role)
     {
 
         TimeSpan timeAlive;
 
         switch(role)
         {
-            case UserTier.Free:
+            case UserTier.Anonymous:
                 timeAlive = TimeSpan.FromDays(1);
+                break;
+            case UserTier.Free:
+                timeAlive = TimeSpan.FromDays(7);
                 break;
             case UserTier.Paid:
                 timeAlive = TimeSpan.MaxValue;
