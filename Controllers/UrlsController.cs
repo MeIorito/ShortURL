@@ -1,7 +1,5 @@
 namespace ShortURL.Controllers;
 
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShortURL.DTOs;
@@ -20,10 +18,13 @@ public class UrlsController : ControllerBase
         _userContextService = userContextService;
     }
 
+    // Test endpoint for debugging, not for real world usage
     [HttpGet]
-    public IActionResult GetUrls()
+    public async Task<IActionResult> GetUrls()
     {
-        return Ok();
+        GetAllUrlsResponseDto dto = await _urlService.GetAllUrlsAsync();
+
+        return Ok(dto);
     }
 
     [HttpGet("{id}")]

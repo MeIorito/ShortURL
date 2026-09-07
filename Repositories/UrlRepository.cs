@@ -1,6 +1,7 @@
 namespace ShortURL.Repositories;
 
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using ShortURL.Configuration;
 using ShortURL.Models;
@@ -23,4 +24,12 @@ public class UrlRepository
 
         return url;
     }
+
+    public async Task<List<Url>> GetAllUrls()
+        {
+            var filter = Builders<Url>.Filter.Empty;
+            
+            var cursor = await _urls.FindAsync(filter);
+            return await cursor.ToListAsync();
+        }
 }

@@ -26,4 +26,11 @@ public class UrlService
 
         return new CreateUrlResponseDto(await _urlRepository.CreateUrl(url));
     }
+
+    public async Task<GetAllUrlsResponseDto> GetAllUrlsAsync()
+    {
+        var urls = await _urlRepository.GetAllUrls();
+
+        return new GetAllUrlsResponseDto(urls);
+    }
 }
