@@ -4,6 +4,7 @@ using ShortURL.Repositories;
 using ShortURL.Models;
 using ShortURL.DTOs;
 using System;
+using ShortURL.Enums;
 
 public class UrlService
 {
@@ -15,13 +16,28 @@ public class UrlService
     }
 
     // All dynamic stuff still hardcoded
-    public async Task<CreateUrlResponseDto> CreateUrlAsync(CreateUrlDto dto, Guid userId)
+    public async Task<CreateUrlResponseDto> CreateUrlAsync(CreateUrlDto dto, Guid userId, UserTier role)
     {
+
+        TimeSpan timeAlive;
+
+        switch(role)
+        {
+            case UserTier.Free:
+                timeAlive = TimeSpan.FromDays(1);
+                break;
+            case UserTier.Paid:
+                timeAlive = TimeSpan.MaxValue;
+                break;
+            default:
+                throw new InvalidOperationException("User role is invalid.");
+        }
+
         Url url = new Url(
             "XXxxXX",
             dto.url,
             userId,
-            DateTime.UtcNow.Add(new TimeSpan(1,0,0))
+            DateTime.UtcNow.Add(timeAlive)
         );
 
         return new CreateUrlResponseDto(await _urlRepository.CreateUrl(url));

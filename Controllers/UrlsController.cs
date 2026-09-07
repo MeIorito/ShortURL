@@ -3,6 +3,7 @@ namespace ShortURL.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShortURL.DTOs;
+using ShortURL.Enums;
 using ShortURL.Services;
 
 [ApiController]
@@ -38,8 +39,9 @@ public class UrlsController : ControllerBase
     public async Task<IActionResult> CreateUrl(CreateUrlDto createDto)
     {
         Guid userId = await _userContextService.GetCurrentUserSub();
+        UserTier role = await _userContextService.GetCurrentUserTier();
 
-        CreateUrlResponseDto dto = await _urlService.CreateUrlAsync(createDto, userId);
+        CreateUrlResponseDto dto = await _urlService.CreateUrlAsync(createDto, userId, role);
 
         return Ok(dto);
     }

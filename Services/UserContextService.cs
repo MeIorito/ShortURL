@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using ShortURL.Exceptions;
+using ShortURL.Enums;
 
 namespace ShortURL.Services;
 
@@ -23,5 +24,18 @@ public class UserContextService
         }
         
         return userId;
+    }
+
+    public async Task<UserTier> GetCurrentUserTier()
+    {
+        // TODO create custom context exceptions
+        var user = (_context.HttpContext?.User) ?? throw new InvalidCredentialsException();
+
+        if (!Enum.TryParse(user.FindFirstValue(ClaimTypes.Role), out UserTier role))
+        {
+            throw new InvalidCredentialsException();
+        }
+
+        return role;
     }
 }
