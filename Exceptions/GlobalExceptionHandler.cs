@@ -28,6 +28,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             InvalidCredentialsException => StatusCodes.Status401Unauthorized,
             EmailAlreadyExistsException => StatusCodes.Status409Conflict,
             UserNotFoundException => StatusCodes.Status404NotFound,
+            UrlNotFoundException => StatusCodes.Status404NotFound,
             _ => StatusCodes.Status500InternalServerError
         };
 
@@ -37,6 +38,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             InvalidCredentialsException => "Invalid credentials",
             EmailAlreadyExistsException => "Email already exists",
             UserNotFoundException => "User not found",
+            UrlNotFoundException => "Url not found",
             _ => "Internal server error"
         };
 

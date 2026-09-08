@@ -49,15 +49,18 @@ public class UrlsController : ControllerBase
     [HttpPost("free")]
     public async Task<IActionResult> CreateUrlFree(CreateUrlDto createDto)
     {
-
         CreateUrlResponseDto dto = await _urlService.CreateUrlAsync(createDto, null, UserTier.Anonymous);
 
         return Ok(dto);
     }
 
-    [HttpDelete("{id}")]
-    public IActionResult DeleteUrl(string id)
+    [Authorize]
+    [HttpDelete("{urlId}")]
+    public async Task<IActionResult> DeleteUrl(Guid urlId)
     {
-        return Ok();
+        Guid userId = await _userContextService.GetCurrentUserSub();
+        DeleteUrlByIdResponseDto dto = await _urlService.DeleteUrlById(urlId, userId);
+
+        return Ok(dto);
     }
 }

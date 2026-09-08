@@ -5,6 +5,7 @@ using ShortURL.Models;
 using ShortURL.DTOs;
 using System;
 using ShortURL.Enums;
+using ShortURL.Exceptions;
 
 public class UrlService
 {
@@ -51,5 +52,20 @@ public class UrlService
         var urls = await _urlRepository.GetAllUrls();
 
         return new GetAllUrlsResponseDto(urls);
+    }
+
+    /*TODO Both situations return the same exception while the reason differs
+      Create different exceptions.
+    */ 
+    public async Task<DeleteUrlByIdResponseDto> DeleteUrlById(Guid urlId, Guid userId)
+    {
+        var deleteResult =  await _urlRepository.DeleteUrlByIdWithUserId(urlId, userId);
+
+        if (deleteResult.DeletedCount == 0)
+        {
+            throw new UrlNotFoundException();
+        }
+
+        return new DeleteUrlByIdResponseDto(deleteResult.IsAcknowledged, deleteResult.DeletedCount);
     }
 }
