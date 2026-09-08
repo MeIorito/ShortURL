@@ -18,9 +18,6 @@ public class GlobalExceptionHandler : IExceptionHandler
         Exception exception,
         CancellationToken cancellationToken)
     {
-        _logger.LogError(
-            exception,
-            "An unhandled exception occurred.");
 
         var statusCode = exception switch
         {
@@ -70,6 +67,15 @@ public class GlobalExceptionHandler : IExceptionHandler
             httpContext.TraceIdentifier;
 
         httpContext.Response.StatusCode = statusCode;
+
+        if (title == "Internal server error")
+        {
+            _logger.LogError(exception, "An unhandled system exception occurred: {Title}", title);
+        }
+        else
+        {
+            _logger.LogInformation("Business logic exception handled: {Title}. Details: {Message}", title, exception.Message);
+        }
 
         await httpContext.Response.WriteAsJsonAsync(
             problemDetails,
