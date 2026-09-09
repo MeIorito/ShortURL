@@ -48,6 +48,13 @@ public class UrlService
         return new CreateUrlResponseDto(await _urlRepository.CreateUrl(url));
     }
 
+    public async Task<string> GetOriginalUrl(string code)
+    {
+        string? originalUrl = await _urlRepository.GetOriginalUrl(code) ?? throw new UrlNotFoundException();
+
+        return originalUrl;
+    }
+
     public async Task<GetAllUrlsResponseDto> GetAllUrlsAsync()
     {
         var urls = await _urlRepository.GetAllUrls();

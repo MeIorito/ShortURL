@@ -33,6 +33,17 @@ public class UrlRepository
         return url;
     }
 
+    public async Task<string?> GetOriginalUrl(string code)
+    {
+        _logger.LogInformation("Fetching original URL for code {code}", code);
+
+        var urlDocument = await _urls.Find(u => u.ShortCode == code).FirstOrDefaultAsync();
+
+        _logger.LogInformation("Original url found is {url} ", urlDocument?.OriginalUrl);
+
+        return urlDocument?.OriginalUrl;
+    }
+
     public async Task<List<Url>> GetAllUrls()
     {
         _logger.LogInformation("Fetching all URLs from the database.");
