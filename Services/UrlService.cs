@@ -10,6 +10,7 @@ using ShortURL.Exceptions;
 public class UrlService
 {
     private readonly UrlRepository _urlRepository;
+    private static Random random = new Random();
 
     public UrlService(UrlRepository urlRepository)
     {
@@ -38,7 +39,7 @@ public class UrlService
         }
 
         Url url = new Url(
-            "XXxxXX",
+            RandomString(6),
             dto.url,
             userId,
             DateTime.UtcNow.Add(timeAlive)
@@ -74,5 +75,13 @@ public class UrlService
         }
 
         return new DeleteUrlByIdResponseDto(deleteResult.IsAcknowledged, deleteResult.DeletedCount);
+    }
+
+    // Helper functions
+    private static string RandomString(int length)
+    {
+        const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 }
