@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using ShortURL.Configuration;
+using ShortURL.Controllers;
 using ShortURL.Models;
 
 public class UrlRepository
@@ -40,6 +41,17 @@ public class UrlRepository
         var cursor = await _urls.FindAsync(filter);
         var list = await cursor.ToListAsync();
         
+        _logger.LogInformation("Successfully retrieved {Count} URLs.", list.Count);
+        return list;
+    }
+
+    public async Task<List<Url>> GetAllUrlsByUserId(Guid userId)
+    {
+        _logger.LogInformation("Fetching all URLs from user with userId: {} from the database.", userId);
+
+        var cursor = await _urls.FindAsync(u => u.UserId == userId);
+        var list = await cursor.ToListAsync();
+
         _logger.LogInformation("Successfully retrieved {Count} URLs.", list.Count);
         return list;
     }

@@ -54,6 +54,13 @@ public class UrlService
         return new GetAllUrlsResponseDto(urls);
     }
 
+    public async Task<GetAllUrlsResponseDto> GetAllUrlsByUserId(Guid userId)
+    {
+        var urls = await _urlRepository.GetAllUrlsByUserId(userId);
+
+        return new GetAllUrlsResponseDto(urls);
+    }
+
     /*TODO Both situations return the same exception while the reason differs
       Create different exceptions.
     */ 

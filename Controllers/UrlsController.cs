@@ -28,6 +28,26 @@ public class UrlsController : ControllerBase
         return Ok(dto);
     }
 
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet("user/{userId}")]
+    public async Task<IActionResult> GetUrlsByUserIdAdmin(Guid userId)
+    {
+        GetAllUrlsResponseDto dto = await _urlService.GetAllUrlsByUserId(userId);
+
+        return Ok(dto);
+    }
+
+    [Authorize]
+    [HttpGet("user")]
+    public async Task<IActionResult> GetUrlsByUserId()
+    {
+        Guid userId = await _userContextService.GetCurrentUserSub();
+        GetAllUrlsResponseDto dto = await _urlService.GetAllUrlsByUserId(userId);
+
+        return Ok(dto);
+    }
+
     [HttpGet("{id}")]
     public IActionResult GetUrl(string id)
     {
