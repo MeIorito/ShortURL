@@ -27,6 +27,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             UserNotFoundException => StatusCodes.Status404NotFound,
             UrlNotFoundException => StatusCodes.Status404NotFound,
             UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
+            UserTierDoesNotExsistException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
         };
 
@@ -38,6 +39,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             UserNotFoundException => "User not found",
             UrlNotFoundException => "Url not found",
             UnauthorizedAccessException => "User not authorized for operation",
+            UserTierDoesNotExsistException => "User tier is invalid",
             _ => "Internal server error"
         };
 

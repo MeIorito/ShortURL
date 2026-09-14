@@ -17,7 +17,6 @@ public class UrlService
         _urlRepository = urlRepository;
     }
 
-    // All dynamic stuff still hardcoded
     public async Task<CreateUrlResponseDto> CreateUrlAsync(CreateUrlDto dto, Guid? userId, UserTier role)
     {
 
@@ -35,7 +34,7 @@ public class UrlService
                 timeAlive = TimeSpan.MaxValue;
                 break;
             default:
-                throw new InvalidOperationException("User role is invalid.");
+                throw new UserTierDoesNotExsistException();
         }
 
         Url url = new Url(
