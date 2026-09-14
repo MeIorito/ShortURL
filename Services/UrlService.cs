@@ -50,7 +50,7 @@ public class UrlService
 
     public async Task<string> GetOriginalUrl(string code)
     {
-        string? originalUrl = await _urlRepository.GetOriginalUrl(code) ?? throw new UrlNotFoundException();
+        string? originalUrl = await _urlRepository.GetByShortCode(code) ?? throw new UrlNotFoundException();
 
         return originalUrl;
     }

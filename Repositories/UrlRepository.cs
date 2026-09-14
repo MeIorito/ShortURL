@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using ShortURL.Configuration;
-using ShortURL.Controllers;
 using ShortURL.Models;
 
 public class UrlRepository
@@ -33,7 +32,7 @@ public class UrlRepository
         return url;
     }
 
-    public async Task<string?> GetOriginalUrl(string code)
+    public async Task<string?> GetByShortCode(string code)
     {
         _logger.LogInformation("Fetching original URL for code {code}", code);
 
@@ -42,6 +41,17 @@ public class UrlRepository
         _logger.LogInformation("Original url found is {url} ", urlDocument?.OriginalUrl);
 
         return urlDocument?.OriginalUrl;
+    }
+
+    public async Task<Url?> GetUrlById(Guid urlId)
+    {
+        _logger.LogInformation(
+            "Fetching URL with ID: {UrlId}",
+            urlId);
+
+        return await _urls
+            .Find(u => u.Id == urlId)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<List<Url>> GetAllUrls()
@@ -65,6 +75,23 @@ public class UrlRepository
 
         _logger.LogInformation("Successfully retrieved {Count} URLs.", list.Count);
         return list;
+    }
+
+    public async Task<long> CountUrlsByUserId(Guid userId)
+    {
+        _logger.LogInformation(
+            "Counting URLs for user with ID: {UserId}.",
+            userId);
+
+        var count = await _urls.CountDocumentsAsync(
+            u => u.UserId == userId);
+
+        _logger.LogInformation(
+            "User {UserId} has {Count} URLs.",
+            userId,
+            count);
+
+        return count;
     }
     
     public async Task<DeleteResult> DeleteUrlByIdWithUserId(Guid urlId, Guid userId)
@@ -91,6 +118,23 @@ public class UrlRepository
         var result = await _urls.DeleteOneAsync(u => u.Id == urlId);
         
         _logger.LogInformation("Successfully deleted URL ID: {UrlId}. Deleted count: {DeletedCount}", urlId, result.DeletedCount);
+        return result;
+    }
+
+    public async Task<DeleteResult> DeleteUrlById(Guid urlId)
+    {
+        _logger.LogInformation(
+            "Deleting URL with ID: {UrlId}.",
+            urlId);
+
+        var result = await _urls.DeleteOneAsync(
+            u => u.Id == urlId);
+
+        _logger.LogInformation(
+            "Deleted URL with ID {UrlId}. Deleted count: {DeletedCount}.",
+            urlId,
+            result.DeletedCount);
+
         return result;
     }
 }
