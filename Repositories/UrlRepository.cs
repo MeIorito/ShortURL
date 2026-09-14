@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using ShortURL.Configuration;
+using ShortURL.Exceptions;
 using ShortURL.Models;
 
 public class UrlRepository
@@ -105,7 +106,7 @@ public class UrlRepository
         if (existingUrl == null)
         {
             _logger.LogWarning("Delete failed: URL ID: {UrlId} was not found.", urlId);
-            throw new KeyNotFoundException("The URL ID does not exist.");
+            throw new UrlNotFoundException();
         }
 
         if (existingUrl.UserId != userId)

@@ -26,6 +26,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             EmailAlreadyExistsException => StatusCodes.Status409Conflict,
             UserNotFoundException => StatusCodes.Status404NotFound,
             UrlNotFoundException => StatusCodes.Status404NotFound,
+            UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
             _ => StatusCodes.Status500InternalServerError
         };
 
@@ -36,6 +37,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             EmailAlreadyExistsException => "Email already exists",
             UserNotFoundException => "User not found",
             UrlNotFoundException => "Url not found",
+            UnauthorizedAccessException => "User not authorized for operation",
             _ => "Internal server error"
         };
 
