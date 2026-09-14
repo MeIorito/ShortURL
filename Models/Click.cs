@@ -1,3 +1,6 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace ShortURL.Models;
 
 public class Click
@@ -6,20 +9,24 @@ public class Click
 
     public Click(
         Guid urlId,
-        DateTime timeStamp,
         string ipAddress,
         string? userAgent,
-        string? referer)
+        string? referer
+        )
     {
         UrlId = urlId;
-        TimeStamp = timeStamp;
+        TimeStamp = DateTime.UtcNow;
         IpAddress = ipAddress;
         UserAgent = userAgent;
         Referer = referer;
+        ExpiresAt = TimeStamp.Add(TimeSpan.FromDays(365));
     }
 
+    [BsonId]
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid Id { get; private set; }
 
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid UrlId { get; private set; }
 
     public DateTime TimeStamp { get; private set; }
@@ -29,4 +36,6 @@ public class Click
     public string? UserAgent { get; private set; }
 
     public string? Referer { get; private set; }
+
+    public DateTime ExpiresAt { get; private set; }
 }
